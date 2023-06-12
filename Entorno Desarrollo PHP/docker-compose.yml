@@ -16,32 +16,33 @@ services:
         build: docker/php-fpm
         restart: always
         working_dir: /app
-        #links:
-        #    - mariadb
+        env_file: .env
+        links:
+            - mariadb
         volumes:
             - ".:/app"
             - "./docker/php-fpm/php-overrides.ini:/usr/local/etc/php/conf.d/php-overrides.ini"
         environment:
             XDEBUG_MODE: "debug"
 
-    #mariadb:
-    #    image: "mariadb:10.10.2"
-    #    restart: always
-    #    working_dir: /app
-    #    volumes:
-    #        - ".:/app"
-    #        - "./mariadb/data:/var/lib/mysql"
-    #        - "./mariadb/logs:/var/log/mysql"
-    #        - "./mariadb/conf:/etc/mysql"
-    #    environment:
-    #        MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
-    #        MARIADB_DATABASE: "${MARIADB_DATABASE}"
-    #        MARIADB_USER: "${MARIADB_USER}"
-    #        MARIADB_PASSWORD: "${MARIADB_PASSWORD}"
-    #    ports:
-    #        - "3306:3306"
+    mariadb:
+        image: "mariadb:10.10.2"
+        restart: always
+        working_dir: /app
+        volumes:
+            - ".:/app"
+            - "./mariadb/data:/var/lib/mysql"
+            - "./mariadb/logs:/var/log/mysql"
+            - "./mariadb/conf:/etc/mysql"
+        environment:
+            MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
+            MARIADB_DATABASE: "${MARIADB_DATABASE}"
+            MARIADB_USER: "${MARIADB_USER}"
+            MARIADB_PASSWORD: "${MARIADB_PASSWORD}"
+        ports:
+            - "3306:3306"
 
-    #redis:
-    #    image: "redis:7.0.7-alpine"
-    #    environment:
-    #        ALLOW_EMPTY_PASSWORD: "yes"
+    redis:
+        image: "redis:7.0.7-alpine"
+        environment:
+            ALLOW_EMPTY_PASSWORD: "yes"

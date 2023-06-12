@@ -1,0 +1,25 @@
+include('db/db.php');
+// Aqui nos conectamos a la base de datos con el siguiente comando
+$dbh=Database::connect();
+
+// Con esto sacamos los datos de la base de datos
+$stmt = $dbh->prepare("SELECT * FROM Producto");
+$stmt->setFetchMode(PDO::FETCH_ASSOC);
+$stmt->execute();
+while ($row = $stmt->fetch()){
+    echo "Nombre: {$row["nombre"]} <br>";
+    echo "Precio: {$row["precio"]} <br>";
+}
+// Otra forma de mostrar los datos
+$stmt = $dbh->prepare("SELECT * FROM Producto");
+$stmt->execute();
+while ($row = $stmt->fetch(PDO::FETCH_OBJ)){
+    echo "Nombre: " . $row->nombre . "<br>";
+    echo "Precio: " . $row->precio . "<br>";
+}
+// Otra forma de mostrar los datos
+$stmt = $dbh->query("SELECT * FROM Producto");
+$Clientes = $stmt->fetchAll(PDO::FETCH_OBJ);
+foreach ($Clientes as $Clientes){
+    echo $Clientes->nombre . "<br>";
+}
